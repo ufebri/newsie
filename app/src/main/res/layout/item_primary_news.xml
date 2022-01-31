@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_vertical_medium"
+    android:orientation="vertical">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_itemPrimaryImage"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
+        tools:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tv_itemPrimaryTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_vertical_small"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:text="Candidate Biden Called Saudi Arabia a 'Pariah'" />
+
+
+    <TextView
+        android:id="@+id/tv_itemPrimaryTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:maxLines="1"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="11sp"
+        tools:text="4 Hours Ago" />
+
+    <TextView
+        android:id="@+id/tv_itemPrimaryAuthor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:maxLines="1"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="11sp"
+        tools:text="By David E, Sanger" />
+
+</LinearLayout>

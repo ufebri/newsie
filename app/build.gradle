@@ -1,0 +1,78 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+}
+
+def apikeyPropertiesFile = rootProject.file("config.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.raytalktech.newsie"
+        minSdk 21
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+        buildConfigField("String", "APIKEY", apikeyProperties['APIKEY'])
+        buildConfigField("String", "BASEURL", apikeyProperties['BASEURL'])
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    //kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.core:core-ktx:$core_version"
+
+
+    //UI
+    implementation "androidx.appcompat:appcompat:$appCompat_version"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayout_version"
+    implementation "com.google.android.material:material:$material_version"
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation 'com.opensooq.android:pluto:1.6'
+    implementation 'com.google.android.gms:play-services-ads:20.5.0'
+
+    //network
+    implementation "androidx.activity:activity-ktx:$activityKTX_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHTTP_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifeCycle_version"
+
+    //Offline - Room
+    implementation "androidx.room:room-runtime:$roomRuntime_version"
+    kapt "androidx.room:room-compiler:$room_version"
+}

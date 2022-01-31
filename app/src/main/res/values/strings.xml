@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Newsie</string>
+    <string name="home_title_section_1">Breaking News</string>
+    <string name="action_text_more">More</string>
+
+    <!--  Bottom Bar Navigation Name  -->
+    <string name="bottomBarNavigation_Home">Home</string>
+    <string name="bottomBarNavigation_Bookmark">Bookmark</string>
+
+    <!-- Category News-->
+    <string-array name="category_news">
+        <item>business</item>
+        <item>entertainment</item>
+        <item>general</item>
+        <item>health</item>
+        <item>science</item>
+        <item>sports</item>
+        <item>technology</item>
+    </string-array>
+</resources>
