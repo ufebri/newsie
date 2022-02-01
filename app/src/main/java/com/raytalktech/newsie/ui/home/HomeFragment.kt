@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
@@ -41,6 +42,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _contentBinding
     private lateinit var viewModel: HomeViewModel
     private lateinit var newsAdapter: NewsAdapter
+    private var recyclerItem: ArrayList<DataEntity> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,7 +63,7 @@ class HomeFragment : Fragment() {
             val factory = ViewModelFactory.getInstance(requireActivity())
             viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
-            newsAdapter = NewsAdapter()
+            newsAdapter = NewsAdapter(recyclerItem, requireActivity())
 
             populateDataNews()
             viewModel.breakingNews().observe(viewLifecycleOwner, breakingNewsObserver)
@@ -78,10 +80,29 @@ class HomeFragment : Fragment() {
                     Status.LOADING -> {}
                     Status.SUCCESS -> {
                         if (result.data != null) {
-                            newsAdapter.submitData(result.data)
-                            setupAds(result.data.size)
-                            if (category[categories].lastIndex == category.size) showViewDataNews()
-                            newsAdapter.notifyDataSetChanged()
+                            if (category[categories].lastIndex == category.size) {
+                                for (index in result.data.indices) {
+                                    recyclerItem.add(result.data[index])
+
+                                    if (index % 10 == 0)
+                                        recyclerItem.add(
+                                            DataEntity(
+                                                "",
+                                                "",
+                                                "",
+                                                "",
+                                                "",
+                                                "",
+                                                "",
+                                                "",
+                                                "",
+                                                "",
+                                                2
+                                            )
+                                        )
+                                }
+                                showViewDataNews()
+                            }
                         }
                     }
                     Status.ERROR -> {
@@ -97,20 +118,11 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupAds(size: Int) {
-        for (i in 1..size step ITEM_PER_ADD) {
-            val adView = AdView(requireActivity())
-            adView.adSize = AdSize.BANNER
-            adView.adUnitId = BANNER_AD_ID
-        }
-    }
-
     private fun showViewDataNews() {
         binding?.let {
             with(it.rvListNews) {
                 layoutManager =
-                    GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-                addItemDecoration(RecyclerDecoration(10, true))
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 setHasFixedSize(true)
                 adapter = newsAdapter
             }
@@ -161,7 +173,7 @@ class HomeFragment : Fragment() {
 
             override fun set(item: DataEntity, position: Int) {
                 Glide.with(itemView.context).load(item.urlToImage).into(ivPoster)
-                tvTitle.text = item.title
+                tvTitle.text = item.title.replace(" - ", "")
                 tvCategory.text = item.category
             }
         }
