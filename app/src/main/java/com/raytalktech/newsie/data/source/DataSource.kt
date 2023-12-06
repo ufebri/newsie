@@ -10,4 +10,9 @@ interface DataSource {
 
     fun getBreakingNews(): LiveData<List<DataEntity>>
 
+    fun getAllSourceNews(): LiveData<List<DataEntity>>
+
+    fun getDetailSourceNews(sourceName: String): LiveData<List<DataEntity>>
+
+    fun getAllNewsByCategory(category: String): LiveData<Resource<List<DataEntity>>>
 }

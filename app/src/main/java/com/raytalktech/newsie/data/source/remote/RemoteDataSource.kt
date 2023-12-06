@@ -29,7 +29,7 @@ class RemoteDataSource {
 
     fun getBreakingNews(category: String): LiveData<ApiResponse<List<Articles>>> {
         val resultItem = MutableLiveData<ApiResponse<List<Articles>>>()
-        client.getBreakingNews(category = category).enqueue(object : Callback<DataResponse> {
+        client.getTopHeadLines(category = category).enqueue(object : Callback<DataResponse> {
             override fun onResponse(call: Call<DataResponse>, response: Response<DataResponse>) {
                 resultItem.value =
                     ApiResponse.success(response.body()?.articles as List<Articles>)

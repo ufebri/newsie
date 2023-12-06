@@ -9,10 +9,10 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("top-headlines")
-    fun getBreakingNews(
+    fun getTopHeadLines(
         @Query("apiKey") apiKey: String = BuildConfig.APIKEY,
-        @Query("country") country: String = "id",
-        @Query("pageSize") pageSize: String = "100",
+        @Query("country") country: String = "us",
+        @Query("pageSize") pageSize: String = "20",
         @Query("category") category: String
     ): Call<DataResponse>
 

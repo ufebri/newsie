@@ -5,44 +5,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
-import com.opensooq.pluto.PlutoView
-import com.opensooq.pluto.base.PlutoAdapter
-import com.opensooq.pluto.base.PlutoViewHolder
-import com.opensooq.pluto.listeners.OnItemClickListener
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.raytalktech.newsie.R
 import com.raytalktech.newsie.data.source.local.entity.DataEntity
 import com.raytalktech.newsie.databinding.ContentHomeFragmentBinding
 import com.raytalktech.newsie.ui.detail.DetailActivity
 import com.raytalktech.newsie.ui.detail.DetailActivity.Companion.DATA_RESULT
-import com.raytalktech.newsie.utils.RecyclerDecoration
+import com.raytalktech.newsie.utils.PagerAdapter
 import com.raytalktech.newsie.utils.ViewModelFactory
+import com.raytalktech.newsie.utils.vo.Resource
 import com.raytalktech.newsie.utils.vo.Status
 
 class HomeFragment : Fragment() {
 
-    companion object {
-        val ITEM_PER_ADD = 10
-        val BANNER_AD_ID = "ca-app-pub-3940256099942544/6300978111"
-    }
-
+    //binding
     private var _contentBinding: ContentHomeFragmentBinding? = null
     private val binding get() = _contentBinding
+
+    //viewModel
     private lateinit var viewModel: HomeViewModel
-    private lateinit var newsAdapter: NewsAdapter
-    private var recyclerItem: ArrayList<DataEntity> = ArrayList()
+
+    //adapter
+    private lateinit var sourceAdapter: SourceAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,126 +47,109 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-
-            MobileAds.initialize(requireActivity()) { }
-
             val factory = ViewModelFactory.getInstance(requireActivity())
             viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
-            newsAdapter = NewsAdapter(recyclerItem, requireActivity())
+            viewModel.getAllNewsData("Technology").observe(viewLifecycleOwner, getAllNewsData)
+            viewModel.getAllSourceNewsData().observe(viewLifecycleOwner, sourceNewsObserver)
+            viewModel.breakingNews().observe(viewLifecycleOwner, getBreakingNewsData)
 
-            populateDataNews()
-            viewModel.breakingNews().observe(viewLifecycleOwner, breakingNewsObserver)
-        }
-    }
+            //Configure Tab
+            val mListFragmentChip: ArrayList<Fragment> = arrayListOf()
+            val mListChipCategory = resources.getStringArray(R.array.category_news)
 
-    private fun populateDataNews() {
+            for (chipItem in mListChipCategory.indices)
+                mListFragmentChip.add(ContentCategoriesFragment.newInstance(mListChipCategory[chipItem]))
 
-        val category = resources.getStringArray(R.array.category_news)
-
-        for (categories in category.indices) {
-            viewModel.getAllNewsData(category[categories]).observe(viewLifecycleOwner, { result ->
-                when (result.status) {
-                    Status.LOADING -> {}
-                    Status.SUCCESS -> {
-                        if (result.data != null) {
-                            if (category[categories].lastIndex == category.size) {
-                                for (index in result.data.indices) {
-                                    recyclerItem.add(result.data[index])
-
-                                    if (index % 10 == 0)
-                                        recyclerItem.add(
-                                            DataEntity(
-                                                "",
-                                                "",
-                                                "",
-                                                "",
-                                                "",
-                                                "",
-                                                "",
-                                                "",
-                                                "",
-                                                "",
-                                                2
-                                            )
-                                        )
-                                }
-                                showViewDataNews()
-                            }
-                        }
-                    }
-                    Status.ERROR -> {
-                        Toast.makeText(
-                            context,
-                            "BreakingNews: Failed to Get Data",
-                            Toast.LENGTH_LONG
-                        )
-                            .show()
-                    }
-                }
-            })
-        }
-    }
-
-    private fun showViewDataNews() {
-        binding?.let {
-            with(it.rvListNews) {
-                layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                setHasFixedSize(true)
-                adapter = newsAdapter
+            binding?.apply {
+                val fragmentAdapter = PagerAdapter(
+                    childFragmentManager,
+                    mListChipCategory,
+                    mListFragmentChip
+                )
+                viewpagerMain.adapter = fragmentAdapter
+                tlCategoryNews.setupWithViewPager(viewpagerMain)
             }
         }
     }
 
-    private val breakingNewsObserver =
-        Observer<List<DataEntity>> { data -> if (data != null) showViewBreakingNews(data) }
+    private val getBreakingNewsData = Observer<List<DataEntity>> { mDataList ->
+        if (mDataList != null && mDataList.size > 1) {
+            binding?.apply {
+                val mData = mDataList[0]
+                Glide.with(requireActivity()).load(mData.urlToImage).placeholder(
+                    AppCompatResources.getDrawable(
+                        requireActivity(),
+                        R.drawable.baseline_broken_image_24
+                    )
+                ).error(
+                    AppCompatResources.getDrawable(
+                        requireActivity(),
+                        R.drawable.loading_animation
+                    )
+                )
+                    .into(ivItemFeatureCover)
 
-    private fun showViewBreakingNews(data: List<DataEntity>) {
-        val sliderAdapter = FeaturedImageAdapter(
-            data,
-            object : OnItemClickListener<DataEntity> {
-                override fun onItemClicked(item: DataEntity?, position: Int) {
-                    startActivity(
-                        Intent(context, DetailActivity::class.java).putExtra(
-                            DATA_RESULT, item
+                tvItemFeatureTitle.text = mData.title
+                tvItemDateFeatureCover.text =
+                    String.format("%s • Today", mData.name)
+
+
+                Glide.with(requireActivity())
+                    .load(mData.faviconUrl)
+                    .placeholder(
+                        AppCompatResources.getDrawable(
+                            requireActivity(),
+                            R.drawable.loading_animation
+                        )
+                    ).circleCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .error(
+                        AppCompatResources.getDrawable(
+                            requireActivity(),
+                            R.drawable.baseline_broken_image_24
                         )
                     )
+                    .into(sivFavicon)
+
+                cvContentFeaturedNews.setOnClickListener {
+                    startActivity(
+                        Intent(requireActivity(), DetailActivity::class.java)
+                            .putExtra(DATA_RESULT, mData)
+                    )
                 }
-            })
-
-        binding?.let {
-            with(it.ivSlideTopNews) {
-                create(sliderAdapter, 15000, lifecycle)
-                setIndicatorPosition(PlutoView.IndicatorPosition.RIGHT_BOTTOM)
             }
         }
     }
 
-    class FeaturedImageAdapter(
-        items: List<DataEntity>,
-        onItemClickListener: OnItemClickListener<DataEntity>? = null
-    ) : PlutoAdapter<DataEntity, FeaturedImageAdapter.ViewHolder>(
-        items as MutableList<DataEntity>,
-        onItemClickListener
-    ) {
-
-        override fun getViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            return ViewHolder(parent, R.layout.item_featured_news)
-        }
-
-        class ViewHolder(parent: ViewGroup, itemLayoutId: Int) :
-            PlutoViewHolder<DataEntity>(parent, itemLayoutId) {
-            private var ivPoster: ImageView = getView(R.id.iv_itemFeatureCover)
-            private var tvTitle: TextView = getView(R.id.tv_itemFeatureTitle)
-            private var tvCategory: TextView = getView(R.id.tv_itemFeatureCategory)
-
-            override fun set(item: DataEntity, position: Int) {
-                Glide.with(itemView.context).load(item.urlToImage).into(ivPoster)
-                tvTitle.text = item.title.replace(" - ", "")
-                tvCategory.text = item.category
+    private val getAllNewsData = Observer<Resource<List<DataEntity>>> { result ->
+        {
+            when (result.status) {
+                Status.LOADING -> {}
+                Status.SUCCESS -> {}
+                Status.ERROR -> {}
             }
         }
     }
 
+    private val sourceNewsObserver = Observer<List<DataEntity>> { data ->
+        if (data != null) {
+            binding?.rvPublisher?.apply {
+                layoutManager = LinearLayoutManager(
+                    this@HomeFragment.context,
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
+                sourceAdapter = SourceAdapter { goToSourceListPubslisher(it.name) }
+                adapter = sourceAdapter
+                hasFixedSize()
+
+                sourceAdapter.submitList(data)
+            }
+        }
+    }
+
+    private fun goToSourceListPubslisher(publisherName: String) {
+        //TODO: Go To List
+    }
 }

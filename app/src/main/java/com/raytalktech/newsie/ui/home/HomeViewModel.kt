@@ -12,4 +12,12 @@ class HomeViewModel(private val dataRepository: DataRepository) : ViewModel() {
         dataRepository.getAllNewsData(category)
 
     fun breakingNews(): LiveData<List<DataEntity>> = dataRepository.getBreakingNews()
+
+    fun getAllSourceNewsData(): LiveData<List<DataEntity>> = dataRepository.getAllSourceNews()
+
+    fun getDetailSourceNews(sourceName: String): LiveData<List<DataEntity>> =
+        dataRepository.getDetailSourceNews(sourceName)
+
+    fun getAllNewsByCategory(category: String): LiveData<Resource<List<DataEntity>>> =
+        dataRepository.getAllNewsByCategory(category)
 }

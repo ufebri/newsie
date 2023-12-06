@@ -1,69 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:descendantFocusability="blocksDescendants"
+        android:nestedScrollingEnabled="false"
         tools:context=".MainActivity">
 
-        <com.opensooq.pluto.PlutoView
-            android:id="@+id/iv_slideTopNews"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_publisher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            app:indicator_visibility="true"
+            android:layout_marginVertical="@dimen/margin_vertical_small"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="1" />
 
         <LinearLayout
-            android:id="@+id/ll_separator"
+            android:id="@+id/section_breaking_news"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_vertical_medium"
+            android:layout_margin="@dimen/margin_vertical_small"
             android:orientation="horizontal"
+            android:weightSum="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_slideTopNews">
+            app:layout_constraintTop_toBottomOf="@id/rv_publisher">
+
 
             <TextView
-                android:layout_width="wrap_content"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/home_title_section_1"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:text="@string/tv_title_section_breaking_news" />
 
             <TextView
-                android:id="@+id/tv_more"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/action_text_more"
+                android:text="@string/see_all"
                 android:textAlignment="textEnd"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
+                android:textColor="@android:color/holo_green_dark"
+                android:textStyle="normal" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_listNews"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_content_featured_news"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_vertical_small"
+            app:cardCornerRadius="@dimen/margin_vertical_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/section_breaking_news">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black">
+
+                <ImageView
+                    android:id="@+id/iv_itemFeatureCover"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:alpha="0.3"
+                    android:contentDescription="@string/featured_images"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/tv_itemFeatureTitle"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_vertical_small"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@id/section_itemFeaturedDetail"
+                    app:layout_constraintEnd_toEndOf="@id/section_itemFeaturedDetail"
+                    app:layout_constraintStart_toStartOf="@id/section_itemFeaturedDetail"
+                    tools:text="@tools:sample/lorem/random" />
+
+                <LinearLayout
+                    android:id="@+id/section_itemFeaturedDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_vertical_small"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/siv_favicon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        tools:src="@tools:sample/avatars" />
+
+                    <TextView
+                        android:id="@+id/tv_itemDateFeatureCover"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_vertical_small"
+                        android:textColor="@color/white"
+                        tools:text="CNN News - Today" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_categoryNews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_vertical_small"
+            android:background="@android:color/white"
+            android:contentDescription="@string/categories_of_content"
             android:overScrollMode="never"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_separator"
-            tools:listitem="@layout/item_primary_news" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_content_featured_news"
+            app:tabGravity="fill"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorGravity="center"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="scrollable"
+            app:tabRippleColor="@android:color/transparent"
+            app:tabUnboundedRipple="false" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_vertical_small"
+            android:overScrollMode="never"
+            app:layout_constraintEnd_toEndOf="@id/tl_categoryNews"
+            app:layout_constraintStart_toStartOf="@id/tl_categoryNews"
+            app:layout_constraintTop_toBottomOf="@id/tl_categoryNews" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

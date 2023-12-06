@@ -8,6 +8,8 @@ import com.raytalktech.newsie.data.source.remote.ApiResponse
 import com.raytalktech.newsie.data.source.remote.RemoteDataSource
 import com.raytalktech.newsie.data.source.remote.response.Articles
 import com.raytalktech.newsie.utils.AppExecutors
+import com.raytalktech.newsie.utils.DataHelper
+import com.raytalktech.newsie.utils.FaviconHelper
 import com.raytalktech.newsie.utils.vo.Resource
 
 class DataRepository private constructor(
@@ -41,9 +43,8 @@ class DataRepository private constructor(
                 localDataSource.getAllDataNews()
 
             //TODO: Make this fetch when new data date available
-            override fun shouldFetch(data: List<DataEntity>?): Boolean {
-                return data == null || data.isEmpty()
-            }
+            override fun shouldFetch(data: List<DataEntity>?): Boolean =
+                data.isNullOrEmpty() || DataHelper.isCurrentDateUpdated(data[0].id)
 
 
             override fun createCall(): LiveData<ApiResponse<List<Articles>>> =
@@ -61,9 +62,10 @@ class DataRepository private constructor(
                             description,
                             url,
                             urlToImage,
-                            publishedAt,
+                            DataHelper.formatDate(publishedAt),
                             content,
-                            category
+                            category,
+                            faviconUrl = FaviconHelper.getFaviconUrl(url)
                         )
                         listBreakingNews.add(articles)
                     }
@@ -75,5 +77,51 @@ class DataRepository private constructor(
 
     override fun getBreakingNews(): LiveData<List<DataEntity>> {
         return localDataSource.getBreakingNews()
+    }
+
+    override fun getAllSourceNews(): LiveData<List<DataEntity>> {
+        return localDataSource.getAllSourceNews()
+    }
+
+
+    override fun getDetailSourceNews(sourceName: String): LiveData<List<DataEntity>> {
+        return localDataSource.getAllDetailSourceNews(sourceName)
+    }
+
+    override fun getAllNewsByCategory(category: String): LiveData<Resource<List<DataEntity>>> {
+        return object : NetworkBoundResource<List<DataEntity>, List<Articles>>(appExecutors) {
+            override fun loadFromDB(): LiveData<List<DataEntity>> =
+                localDataSource.getAllNewsByCategory(category)
+
+            override fun createCall(): LiveData<ApiResponse<List<Articles>>> =
+                remoteDataSource.getBreakingNews(category)
+
+            override fun saveCallResult(data: List<Articles>) {
+                val listBreakingNews = ArrayList<DataEntity>()
+                for (response in data) {
+                    with(response) {
+                        val articles = DataEntity(
+                            publishedAt,
+                            source.name,
+                            author,
+                            title,
+                            description,
+                            url,
+                            urlToImage,
+                            DataHelper.formatDate(publishedAt),
+                            content,
+                            category,
+                            faviconUrl = FaviconHelper.getFaviconUrl(url)
+                        )
+                        listBreakingNews.add(articles)
+                    }
+                }
+                localDataSource.insertAllNewsData(listBreakingNews)
+            }
+
+            override fun shouldFetch(data: List<DataEntity>?): Boolean =
+                data.isNullOrEmpty() || DataHelper.isCurrentDateUpdated(data[0].id)
+
+        }.asLiveData()
     }
 }

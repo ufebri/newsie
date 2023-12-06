@@ -6,6 +6,10 @@
     <!--  Bottom Bar Navigation Name  -->
     <string name="bottomBarNavigation_Home">Home</string>
     <string name="bottomBarNavigation_Bookmark">Bookmark</string>
+    <string name="tv_title_section_breaking_news">Breaking News</string>
+    <string name="see_all">See All</string>
+    <string name="featured_images">Featured Images</string>
+    <string name="categories_of_content">Categories of Content</string>
 
     <!-- Category News-->
     <string-array name="category_news">

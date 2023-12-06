@@ -21,6 +21,7 @@ data class DataEntity(
     @ColumnInfo(name = "publishedAt") val publishedAt: String,
     @ColumnInfo(name = "content") val content: String?,
     @ColumnInfo(name = "category") val category: String,
+    @ColumnInfo(name = "faviconUrl") val faviconUrl: String?,
     @ColumnInfo(name = "viewType") var viewType: Int = 1
 
 ) : Parcelable

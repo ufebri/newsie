@@ -58,8 +58,6 @@ class DetailActivity : AppCompatActivity() {
                 webSettings.loadWithOverviewMode = true
                 webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
                 webSettings.domStorageEnabled = true
-                webSettings.setAppCacheEnabled(true)
-                webSettings.setAppCachePath(cacheDir.absolutePath)
 
                 // Load google.de
                 loadUrl(url)

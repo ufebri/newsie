@@ -13,9 +13,15 @@ interface AppDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNewsData(mData: List<DataEntity>)
 
-    @Query("SELECT * FROM DataEntity WHERE category = :selectedCategory LIMIT 10 ")
+    @Query("SELECT * FROM DataEntity WHERE category = :selectedCategory ORDER BY id ASC LIMIT 10")
     fun getNewsByCategories(selectedCategory: String): LiveData<List<DataEntity>>
 
     @Query("SELECT DISTINCT * FROM dataentity GROUP BY category ORDER BY id DESC")
     fun getBreakingNews(): LiveData<List<DataEntity>>
+
+    @Query("SELECT DISTINCT * FROM dataentity GROUP BY sourceName ORDER BY id DESC")
+    fun getAllSource(): LiveData<List<DataEntity>>
+
+    @Query("SELECT * FROM DataEntity WHERE sourceName = :sourceName ORDER BY publishedAt DESC")
+    fun getAllSourceDetail(sourceName: String): LiveData<List<DataEntity>>
 }

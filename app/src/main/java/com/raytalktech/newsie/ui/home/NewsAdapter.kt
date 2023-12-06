@@ -1,11 +1,11 @@
 package com.raytalktech.newsie.ui.home
 
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdRequest
@@ -13,30 +13,30 @@ import com.google.android.gms.ads.AdView
 import com.google.android.material.imageview.ShapeableImageView
 import com.raytalktech.newsie.R
 import com.raytalktech.newsie.data.source.local.entity.DataEntity
-import com.raytalktech.newsie.ui.detail.DetailActivity
-import com.raytalktech.newsie.ui.detail.DetailActivity.Companion.DATA_RESULT
 
-class NewsAdapter(private val listData: List<DataEntity>, private val context: Context) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NewsAdapter(private val onClick: (DataEntity) -> Unit) :
+    ListAdapter<DataEntity, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     private val ITEM: Int = 1
     private val BANNER: Int = 2
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM -> {
-                val itemLayout: View = LayoutInflater.from(context)
+                val itemLayout: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_primary_news, parent, false)
                 DataViewHolder(itemLayout)
             }
+
             BANNER -> {
                 val view =
-                    LayoutInflater.from(context).inflate(R.layout.item_list_admob, parent, false)
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_list_admob, parent, false)
                 return AdViewHolder(view)
             }
+
             else -> {
-                val itemLayout: View = LayoutInflater.from(context)
+                val itemLayout: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_primary_news, parent, false)
                 DataViewHolder(itemLayout)
             }
@@ -47,13 +47,12 @@ class NewsAdapter(private val listData: List<DataEntity>, private val context: C
         when (holder.itemViewType) {
             ITEM -> {
                 val holders = holder as DataViewHolder
-                holders.bind(getItem(position))
+                holders.bind(getItem(position), onClick)
             }
+
             BANNER -> {}
         }
     }
-
-    override fun getItemCount(): Int = listData.size
 
     class DataViewHolder(binding: View) :
         RecyclerView.ViewHolder(binding) {
@@ -67,25 +66,19 @@ class NewsAdapter(private val listData: List<DataEntity>, private val context: C
         private var tvItemPrimaryTime: TextView =
             binding.findViewById(R.id.tv_itemPrimaryTime) as TextView
 
-        fun bind(mData: DataEntity) {
+        fun bind(mData: DataEntity, onClick: (DataEntity) -> Unit) {
 
             //setData
             Glide.with(itemView.context)
-                .load(mData.urlToImage)
+                .load(mData.urlToImage ?: R.drawable.baseline_broken_image_24)
+                .override(ivCover.width, ivCover.height)
                 .into(ivCover)
 
             tvItemPrimaryTitle.text = mData.title.replaceAfter("- ", "")
             tvItemPrimaryTime.text = mData.publishedAt
             tvItemPrimaryAuthor.text = String.format("By ${mData.author}")
 
-            itemView.setOnClickListener {
-                itemView.context.startActivity(
-                    Intent(
-                        itemView.context,
-                        DetailActivity::class.java
-                    ).putExtra(DATA_RESULT, mData)
-                )
-            }
+            itemView.setOnClickListener { onClick(mData) }
         }
 
     }
@@ -98,12 +91,32 @@ class NewsAdapter(private val listData: List<DataEntity>, private val context: C
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return listData[position].viewType
+//    override fun getItemViewType(position: Int): Int {
+//        return listData[position].viewType
+//
+//    }
+//
+//    private fun getItem(position: Int): DataEntity {
+//        return listData[position]
+//    }
 
-    }
+    companion object {
+        const val VIEW_TYPE = 8888
 
-    private fun getItem(position: Int): DataEntity {
-        return listData[position]
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DataEntity>() {
+            override fun areItemsTheSame(
+                oldItem: DataEntity,
+                newItem: DataEntity
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: DataEntity,
+                newItem: DataEntity
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }
