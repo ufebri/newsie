@@ -17,6 +17,7 @@ import com.raytalktech.newsie.data.source.local.entity.DataEntity
 import com.raytalktech.newsie.databinding.ContentHomeFragmentBinding
 import com.raytalktech.newsie.ui.detail.DetailActivity
 import com.raytalktech.newsie.ui.detail.DetailActivity.Companion.DATA_RESULT
+import com.raytalktech.newsie.utils.DataMapper
 import com.raytalktech.newsie.utils.PagerAdapter
 import com.raytalktech.newsie.utils.ViewModelFactory
 import com.raytalktech.newsie.utils.vo.Resource
@@ -144,7 +145,7 @@ class HomeFragment : Fragment() {
                 adapter = sourceAdapter
                 hasFixedSize()
 
-                sourceAdapter.submitList(data)
+                sourceAdapter.submitList(DataMapper.populateListPublisher(data))
             }
         }
     }

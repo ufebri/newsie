@@ -19,7 +19,7 @@ interface AppDao {
     @Query("SELECT DISTINCT * FROM dataentity GROUP BY category ORDER BY id DESC")
     fun getBreakingNews(): LiveData<List<DataEntity>>
 
-    @Query("SELECT DISTINCT * FROM dataentity GROUP BY sourceName ORDER BY id DESC")
+    @Query("SELECT DISTINCT * FROM dataentity GROUP BY sourceName ORDER BY faviconUrl DESC")
     fun getAllSource(): LiveData<List<DataEntity>>
 
     @Query("SELECT * FROM DataEntity WHERE sourceName = :sourceName ORDER BY publishedAt DESC")

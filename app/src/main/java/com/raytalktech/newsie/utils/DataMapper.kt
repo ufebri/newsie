@@ -2,7 +2,7 @@ package com.raytalktech.newsie.utils
 
 import com.raytalktech.newsie.data.source.local.entity.DataEntity
 
-object DataMapperWithAds {
+object DataMapper {
     fun populateListDataWithAds(mDataList: List<DataEntity>): List<DataEntity> {
         val dataList = mutableListOf<DataEntity>()
 
@@ -13,6 +13,16 @@ object DataMapperWithAds {
                 dataList.add(setDataAdsMeal())
             }
         }
+
+        return dataList
+    }
+
+    fun populateListPublisher(mDataList: List<DataEntity>): List<DataEntity> {
+        val dataList = mutableListOf<DataEntity>()
+
+        for (index in mDataList.indices)
+            if (mDataList[index].faviconUrl != null)
+                dataList.add(mDataList[index])
 
         return dataList
     }
