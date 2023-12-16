@@ -16,6 +16,7 @@ buildscript {
         roomRuntime_version = '2.3.0'
         nav_version = '2.3.5'
         archLifeCycle_version = '2.3.1'
+        shimmer_version = '0.5.0'
     }
 
     repositories {

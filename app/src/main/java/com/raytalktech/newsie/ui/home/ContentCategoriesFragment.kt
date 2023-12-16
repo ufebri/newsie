@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -56,10 +58,13 @@ class ContentCategoriesFragment : Fragment() {
 
     private val categoriesListData = Observer<Resource<List<DataEntity>>> { result ->
         when (result.status) {
-            Status.LOADING -> {}
+            Status.LOADING -> {
+                binding?.shimmerContentNews?.startShimmer()
+            }
+
             Status.SUCCESS -> {
-                if (result.data != null) {
-                    binding?.rvContent?.apply {
+                binding?.rvContent?.apply {
+                    if (result.data != null) {
                         layoutManager = LinearLayoutManager(
                             requireActivity(),
                             LinearLayoutManager.VERTICAL,
@@ -70,13 +75,26 @@ class ContentCategoriesFragment : Fragment() {
 
                         contentAdapter.submitList(result.data)
                         hasFixedSize()
+                        isVisible = true
+                    } else {
+                        Toast.makeText(requireActivity(), "error get data", Toast.LENGTH_LONG)
+                            .show()
+                        isGone = true
                     }
-                } else {
-                    Toast.makeText(requireActivity(), "error get data", Toast.LENGTH_LONG).show()
+                }
+
+                binding?.shimmerContentNews?.apply {
+                    stopShimmer()
+                    hideShimmer()
+                    isGone = true
                 }
             }
 
             Status.ERROR -> {
+                binding?.shimmerContentNews?.apply {
+                    stopShimmer()
+                    hideShimmer()
+                }
                 Toast.makeText(requireActivity(), "error get data", Toast.LENGTH_LONG).show()
             }
         }
