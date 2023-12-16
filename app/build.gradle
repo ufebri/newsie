@@ -74,7 +74,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-    implementation 'com.opensooq.android:pluto:1.6'
+    implementation "com.facebook.shimmer:shimmer:$shimmer_version"
     implementation 'com.google.android.gms:play-services-ads:20.5.0'
 
     //network

@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:descendantFocusability="blocksDescendants"
-        android:nestedScrollingEnabled="false"
         tools:context=".MainActivity">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -20,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_vertical_small"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_vertical_small"
             android:orientation="horizontal"
+            android:visibility="gone"
             android:weightSum="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,6 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_vertical_small"
+            android:visibility="gone"
             app:cardCornerRadius="@dimen/margin_vertical_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -155,6 +157,30 @@
             app:layout_constraintStart_toStartOf="@id/tl_categoryNews"
             app:layout_constraintTop_toBottomOf="@id/tl_categoryNews" />
 
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_publisher_news"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include layout="@layout/shimmer_publisher_item" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_breaking_news"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/shimmer_publisher_news"
+            app:layout_constraintStart_toStartOf="@id/shimmer_publisher_news"
+            app:layout_constraintTop_toBottomOf="@id/shimmer_publisher_news">
+
+            <include layout="@layout/shimmer_breaking_news_item" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

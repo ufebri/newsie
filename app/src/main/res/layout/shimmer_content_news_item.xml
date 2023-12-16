@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_vertical_small"
+        app:cardBackgroundColor="@color/shimmer_grey"
+        app:cardCornerRadius="@dimen/margin_vertical_small"
+        app:cardElevation="3dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/siv_content1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@color/shimmer_grey"
+                android:elevation="3dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/shapeableimagecutedge" />
+
+            <TextView
+                android:id="@+id/tv_itemFeatureTitle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_vertical_small"
+                android:layout_marginTop="6dp"
+                android:layout_toEndOf="@id/siv_content1"
+                android:background="@color/shimmer_grey"
+                android:elevation="3dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:textColor="@color/shimmer_grey"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="@tools:sample/lorem/random" />
+
+            <LinearLayout
+                android:id="@+id/section_itemFeaturedDetail1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_itemFeatureTitle1"
+                android:layout_marginHorizontal="@dimen/margin_vertical_small"
+                android:layout_toEndOf="@id/siv_content1"
+                android:background="@color/shimmer_grey"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/siv_favicon1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="3dp"
+                    android:background="@color/shimmer_grey"
+                    android:elevation="3dp" />
+
+                <TextView
+                    android:id="@+id/tv_itemDateFeatureCover1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_vertical_small"
+                    android:background="@color/shimmer_grey"
+                    android:elevation="3dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/shimmer_grey"
+                    tools:text="CNN News - Today" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_vertical_small"
+        app:cardBackgroundColor="@color/shimmer_grey"
+        app:cardCornerRadius="@dimen/margin_vertical_small"
+        app:cardElevation="3dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/siv_content2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@color/shimmer_grey"
+                android:elevation="3dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/shapeableimagecutedge" />
+
+            <TextView
+                android:id="@+id/tv_itemFeatureTitle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_vertical_small"
+                android:layout_marginTop="6dp"
+                android:layout_toEndOf="@id/siv_content2"
+                android:background="@color/shimmer_grey"
+                android:elevation="3dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:textColor="@color/shimmer_grey"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="@tools:sample/lorem/random" />
+
+            <LinearLayout
+                android:id="@+id/section_itemFeaturedDetail2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_itemFeatureTitle2"
+                android:layout_marginHorizontal="@dimen/margin_vertical_small"
+                android:layout_toEndOf="@id/siv_content2"
+                android:background="@color/shimmer_grey"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/siv_favicon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="3dp"
+                    android:background="@color/shimmer_grey"
+                    android:elevation="3dp" />
+
+                <TextView
+                    android:id="@+id/tv_itemDateFeatureCover2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_vertical_small"
+                    android:background="@color/shimmer_grey"
+                    android:elevation="3dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/shimmer_grey"
+                    tools:text="CNN News - Today" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_vertical_small"
+        app:cardBackgroundColor="@color/shimmer_grey"
+        app:cardCornerRadius="@dimen/margin_vertical_small"
+        app:cardElevation="3dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/siv_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@color/shimmer_grey"
+                android:elevation="3dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/shapeableimagecutedge" />
+
+            <TextView
+                android:id="@+id/tv_itemFeatureTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_vertical_small"
+                android:layout_marginTop="6dp"
+                android:layout_toEndOf="@id/siv_content"
+                android:background="@color/shimmer_grey"
+                android:elevation="3dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:textColor="@color/shimmer_grey"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="@tools:sample/lorem/random" />
+
+            <LinearLayout
+                android:id="@+id/section_itemFeaturedDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_itemFeatureTitle"
+                android:layout_marginHorizontal="@dimen/margin_vertical_small"
+                android:layout_toEndOf="@id/siv_content"
+                android:background="@color/shimmer_grey"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="3dp"
+                    android:background="@color/shimmer_grey"
+                    android:elevation="3dp" />
+
+                <TextView
+                    android:id="@+id/tv_itemDateFeatureCover"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_vertical_small"
+                    android:background="@color/shimmer_grey"
+                    android:elevation="3dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/shimmer_grey"
+                    tools:text="CNN News - Today" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

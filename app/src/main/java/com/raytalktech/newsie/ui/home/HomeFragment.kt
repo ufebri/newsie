@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.raytalktech.newsie.R
 import com.raytalktech.newsie.data.source.local.entity.DataEntity
 import com.raytalktech.newsie.databinding.ContentHomeFragmentBinding
@@ -75,6 +78,7 @@ class HomeFragment : Fragment() {
     }
 
     private val getBreakingNewsData = Observer<List<DataEntity>> { mDataList ->
+        showLoading(true, 2)
         if (mDataList != null && mDataList.size > 1) {
             binding?.apply {
                 val mData = mDataList[0]
@@ -119,21 +123,63 @@ class HomeFragment : Fragment() {
                             .putExtra(DATA_RESULT, mData)
                     )
                 }
+
+                showLoading(false, 2)
             }
+        } else {
+            showLoading(false, 2)
         }
     }
 
     private val getAllNewsData = Observer<Resource<List<DataEntity>>> { result ->
-        {
+        if (result != null) {
             when (result.status) {
-                Status.LOADING -> {}
-                Status.SUCCESS -> {}
-                Status.ERROR -> {}
+                Status.LOADING -> {
+                    showLoading(true, 1)
+                }
+
+                Status.SUCCESS -> {
+                    //showLoading(false)
+                }
+
+                Status.ERROR -> {
+                    showLoading(false, 1)
+                }
             }
         }
     }
 
+    private fun showLoading(state: Boolean, feature: Int) {
+        binding?.apply {
+            when (feature) {
+                1 -> {
+                    rvPublisher.isGone = state
+                    shimmerPublisherNews.isVisible = state
+                    showShimmer(state, shimmerPublisherNews)
+                }
+
+                2 -> {
+                    sectionBreakingNews.isGone = state
+                    cvContentFeaturedNews.isGone = state
+                    tlCategoryNews.isGone = state
+                    shimmerBreakingNews.isVisible = state
+                    showShimmer(state, shimmerBreakingNews)
+                }
+            }
+        }
+    }
+
+    private fun showShimmer(state: Boolean, shimmer: ShimmerFrameLayout) {
+        if (state) {
+            shimmer.startShimmer()
+        } else {
+            shimmer.stopShimmer()
+            shimmer.hideShimmer()
+        }
+    }
+
     private val sourceNewsObserver = Observer<List<DataEntity>> { data ->
+        showLoading(true, 1)
         if (data != null) {
             binding?.rvPublisher?.apply {
                 layoutManager = LinearLayoutManager(
@@ -146,7 +192,10 @@ class HomeFragment : Fragment() {
                 hasFixedSize()
 
                 sourceAdapter.submitList(DataMapper.populateListPublisher(data))
+                showLoading(false, 1)
             }
+        } else {
+            showLoading(false, 1)
         }
     }
 
