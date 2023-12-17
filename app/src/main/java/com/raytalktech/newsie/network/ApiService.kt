@@ -22,7 +22,7 @@ interface ApiService {
         @Query("apiKey") apiKey: String = BuildConfig.APIKEY,
         @Query("q") keyword: String,
         @Query("sortBy") sortBy: String = "popularity",
-        @Query("pageSize") pageSize: String = "8",
+        @Query("pageSize") pageSize: String = "20",
         @Query("from") fromDate: String = DataHelper.getCurrentDate("yyyy-MM-dd"),
         @Query("to") toDate: String = DataHelper.getDateNDaysAgo(30)
     ): Call<DataResponse>

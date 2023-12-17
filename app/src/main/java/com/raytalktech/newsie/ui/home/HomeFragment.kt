@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -83,15 +83,15 @@ class HomeFragment : Fragment() {
     private val getBreakingNewsData = Observer<List<DataEntity>> { mDataList ->
         showLoading(true, 2)
         if (mDataList != null && mDataList.size > 1) {
+            val mData = mDataList[0]
             binding?.apply {
-                val mData = mDataList[0]
                 Glide.with(requireActivity()).load(mData.urlToImage).placeholder(
-                    AppCompatResources.getDrawable(
+                    ContextCompat.getDrawable(
                         requireActivity(),
                         R.drawable.baseline_broken_image_24
                     )
                 ).error(
-                    AppCompatResources.getDrawable(
+                    ContextCompat.getDrawable(
                         requireActivity(),
                         R.drawable.loading_animation
                     )
@@ -106,16 +106,16 @@ class HomeFragment : Fragment() {
                 Glide.with(requireActivity())
                     .load(mData.faviconUrl)
                     .placeholder(
-                        AppCompatResources.getDrawable(
+                        ContextCompat.getDrawable(
                             requireActivity(),
-                            R.drawable.loading_animation
+                            R.drawable.baseline_broken_image_24
                         )
                     ).circleCrop()
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .error(
-                        AppCompatResources.getDrawable(
+                        ContextCompat.getDrawable(
                             requireActivity(),
-                            R.drawable.baseline_broken_image_24
+                            R.drawable.loading_animation
                         )
                     )
                     .into(sivFavicon)
@@ -139,14 +139,17 @@ class HomeFragment : Fragment() {
             when (result.status) {
                 Status.LOADING -> {
                     showLoading(true, 1)
+                    showLoading(true, 2)
                 }
 
                 Status.SUCCESS -> {
                     showLoading(false, 1)
+                    showLoading(false, 2)
                 }
 
                 Status.ERROR -> {
                     showLoading(false, 1)
+                    showLoading(false, 2)
                 }
             }
         }

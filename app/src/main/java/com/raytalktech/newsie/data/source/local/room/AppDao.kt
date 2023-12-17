@@ -16,7 +16,7 @@ interface AppDao {
     @Query("SELECT * FROM DataEntity WHERE category = :selectedCategory ORDER BY id ASC LIMIT 10")
     fun getNewsByCategories(selectedCategory: String): LiveData<List<DataEntity>>
 
-    @Query("SELECT DISTINCT * FROM dataentity GROUP BY category ORDER BY id DESC")
+    @Query("SELECT DISTINCT * FROM dataentity GROUP BY category ORDER BY publishedAt DESC")
     fun getBreakingNews(): LiveData<List<DataEntity>>
 
     @Query("SELECT DISTINCT * FROM dataentity GROUP BY sourceName ORDER BY faviconUrl DESC")
@@ -25,6 +25,6 @@ interface AppDao {
     @Query("SELECT * FROM DataEntity WHERE sourceName = :sourceName ORDER BY publishedAt DESC")
     fun getAllSourceDetail(sourceName: String): LiveData<List<DataEntity>>
 
-    @Query("SELECT * FROM dataentity WHERE title = :keyword ORDER BY publishedAt DESC")
+    @Query("SELECT * FROM dataentity WHERE category = :keyword ORDER BY publishedAt DESC")
     fun getAllNewsByKeyword(keyword: String): LiveData<List<DataEntity>>
 }

@@ -54,20 +54,24 @@ class DataRepository private constructor(
                 val listBreakingNews = ArrayList<DataEntity>()
                 for (response in data) {
                     with(response) {
-                        val articles = DataEntity(
-                            publishedAt,
-                            source.name,
-                            author,
-                            title,
-                            description,
-                            url,
-                            urlToImage,
-                            DataHelper.formatDate(publishedAt),
-                            content,
-                            category,
-                            faviconUrl = FaviconHelper.getFaviconUrl(url)
-                        )
-                        listBreakingNews.add(articles)
+                        val mFavicon = FaviconHelper.getFaviconUrl(url)
+                        val isFaviconHasHTTPS = mFavicon?.contains("https") ?: false
+                        if (response.source.id != null && isFaviconHasHTTPS) {
+                            val articles = DataEntity(
+                                publishedAt,
+                                source.name,
+                                author,
+                                title,
+                                description,
+                                url,
+                                urlToImage,
+                                DataHelper.formatDate(publishedAt),
+                                content,
+                                category,
+                                faviconUrl = mFavicon
+                            )
+                            listBreakingNews.add(articles)
+                        }
                     }
                 }
                 localDataSource.insertAllNewsData(listBreakingNews)
@@ -100,20 +104,24 @@ class DataRepository private constructor(
                 val listBreakingNews = ArrayList<DataEntity>()
                 for (response in data) {
                     with(response) {
-                        val articles = DataEntity(
-                            publishedAt,
-                            source.name,
-                            author,
-                            title,
-                            description,
-                            url,
-                            urlToImage,
-                            DataHelper.formatDate(publishedAt),
-                            content,
-                            category,
-                            faviconUrl = FaviconHelper.getFaviconUrl(url)
-                        )
-                        listBreakingNews.add(articles)
+                        val mFavicon = FaviconHelper.getFaviconUrl(url)
+                        val isFaviconHasHTTPS = mFavicon?.contains("https") ?: false
+                        if (response.source.id != null && isFaviconHasHTTPS) {
+                            val articles = DataEntity(
+                                publishedAt,
+                                source.name,
+                                author,
+                                title,
+                                description,
+                                url,
+                                urlToImage,
+                                DataHelper.formatDate(publishedAt),
+                                content,
+                                category,
+                                faviconUrl = mFavicon
+                            )
+                            listBreakingNews.add(articles)
+                        }
                     }
                 }
                 localDataSource.insertAllNewsData(listBreakingNews)
@@ -137,20 +145,24 @@ class DataRepository private constructor(
                 val listBreakingNews = ArrayList<DataEntity>()
                 for (response in data) {
                     with(response) {
-                        val articles = DataEntity(
-                            publishedAt,
-                            source.name,
-                            author,
-                            title,
-                            description,
-                            url,
-                            urlToImage,
-                            DataHelper.formatDate(publishedAt),
-                            content,
-                            "General",
-                            faviconUrl = FaviconHelper.getFaviconUrl(url)
-                        )
-                        listBreakingNews.add(articles)
+                        val mFavicon = FaviconHelper.getFaviconUrl(url)
+                        val isFaviconHasHTTPS = mFavicon?.contains("https") ?: false
+                        if (response.source.id != null && isFaviconHasHTTPS) {
+                            val articles = DataEntity(
+                                publishedAt,
+                                source.name,
+                                author,
+                                title,
+                                description,
+                                url,
+                                urlToImage,
+                                DataHelper.formatDate(publishedAt),
+                                content,
+                                keyword,
+                                faviconUrl = mFavicon
+                            )
+                            listBreakingNews.add(articles)
+                        }
                     }
                 }
                 localDataSource.insertAllNewsData(listBreakingNews)

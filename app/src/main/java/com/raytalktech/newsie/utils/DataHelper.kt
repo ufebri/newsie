@@ -38,7 +38,11 @@ object DataHelper {
         return currentDate.after(lastUpdated)
     }
 
-    fun getDateNDaysAgo(days: Int, inputFormat: String = "yyyy-MM-dd", outputFormat: String = "yyyy-MM-dd"): String {
+    fun getDateNDaysAgo(
+        days: Int,
+        inputFormat: String = "yyyy-MM-dd",
+        outputFormat: String = "yyyy-MM-dd"
+    ): String {
         val dateFormat = SimpleDateFormat(inputFormat, Locale.getDefault())
         val parsedDate = dateFormat.parse(getCurrentDate(inputFormat))
 
@@ -77,7 +81,7 @@ object DataHelper {
                     isSameDay(
                         date,
                         Date(currentDate.time - 24 * 60 * 60 * 1000)
-                    ) -> "Yesterday, " + outputFormat.format(date)
+                    ) -> outputFormat.format(date)
 
                     else -> outputFormat.format(date)
                 }

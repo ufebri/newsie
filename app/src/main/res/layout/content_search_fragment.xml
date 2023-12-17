@@ -16,8 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_vertical_small"
-            app:endIconDrawable="@color/colorPrimary"
             app:endIconMode="clear_text"
+            app:endIconTint="@color/colorPrimary"
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -28,6 +28,7 @@
                 android:drawableStart="@drawable/baseline_search_24"
                 android:drawablePadding="@dimen/margin_vertical_small"
                 android:hint="@string/search"
+                android:imeOptions="actionDone"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:padding="@dimen/margin_vertical_small"

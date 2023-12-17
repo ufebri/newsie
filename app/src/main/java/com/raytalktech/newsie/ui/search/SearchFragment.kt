@@ -2,9 +2,13 @@ package com.raytalktech.newsie.ui.search
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
+import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -48,11 +52,21 @@ class SearchFragment : Fragment() {
             viewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
 
             binding?.apply {
-                etSearch.doAfterTextChanged { result ->
-                    if (!result.isNullOrBlank())
-                        viewModel.getSearchListData(result.toString())
-                            .observe(viewLifecycleOwner, getListSearchData)
-                }
+                etSearch.setOnEditorActionListener(object : OnEditorActionListener {
+                    override fun onEditorAction(
+                        resultText: TextView?,
+                        actionID: Int,
+                        keyEvent: KeyEvent?
+                    ): Boolean {
+                        if (actionID == EditorInfo.IME_ACTION_DONE) {
+                            if (!resultText?.text.isNullOrBlank())
+                                viewModel.getSearchListData(resultText?.text.toString())
+                                    .observe(viewLifecycleOwner, getListSearchData)
+                            return true
+                        }
+                        return false
+                    }
+                })
             }
         }
     }
@@ -63,12 +77,15 @@ class SearchFragment : Fragment() {
             Status.SUCCESS -> {
                 if (!result.data.isNullOrEmpty()) {
                     binding?.rvSearch?.apply {
-                        layoutManager = LinearLayoutManager(this@SearchFragment.context)
+                        layoutManager = LinearLayoutManager(
+                            this@SearchFragment.context,
+                            LinearLayoutManager.VERTICAL,
+                            false
+                        )
                         contentAdapter = ContentAdapter { goToDetail(it) }
                         adapter = contentAdapter
 
                         contentAdapter.submitList(result.data)
-                        hasFixedSize()
                     }
                 } else {
                     binding?.apply {
@@ -91,6 +108,8 @@ class SearchFragment : Fragment() {
                 rvSearch.isGone = true
                 animationView.isGone = true
             } else {
+                rvSearch.isVisible = true
+                animationView.isGone = true
                 shimmerContentNews.isGone = true
                 shimmerContentNews.hideShimmer()
             }
