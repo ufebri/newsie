@@ -24,4 +24,7 @@ interface AppDao {
 
     @Query("SELECT * FROM DataEntity WHERE sourceName = :sourceName ORDER BY publishedAt DESC")
     fun getAllSourceDetail(sourceName: String): LiveData<List<DataEntity>>
+
+    @Query("SELECT * FROM dataentity WHERE title = :keyword ORDER BY publishedAt DESC")
+    fun getAllNewsByKeyword(keyword: String): LiveData<List<DataEntity>>
 }

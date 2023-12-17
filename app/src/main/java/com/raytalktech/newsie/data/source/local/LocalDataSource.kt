@@ -25,6 +25,12 @@ class LocalDataSource(private val mAppDao: AppDao) {
 
     fun getAllSourceNews(): LiveData<List<DataEntity>> = mAppDao.getAllSource()
 
-    fun getAllNewsByCategory(categories: String): LiveData<List<DataEntity>> = mAppDao.getNewsByCategories(categories)
-    fun getAllDetailSourceNews(sourceName: String): LiveData<List<DataEntity>> = mAppDao.getAllSourceDetail(sourceName)
+    fun getAllNewsByCategory(categories: String): LiveData<List<DataEntity>> =
+        mAppDao.getNewsByCategories(categories)
+
+    fun getAllDetailSourceNews(sourceName: String): LiveData<List<DataEntity>> =
+        mAppDao.getAllSourceDetail(sourceName)
+
+    fun getSearchListNews(keyword: String): LiveData<List<DataEntity>> =
+        mAppDao.getAllNewsByKeyword(keyword)
 }

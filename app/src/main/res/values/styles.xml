@@ -27,4 +27,7 @@
     <style name="WindowAnimationStyle">
         <item name="android:windowEnterAnimation">@android:anim/linear_interpolator</item>
     </style>
+
+    <!-- ToolBar -->
+    <style name="ToolBarStyle" parent="Theme.AppCompat"></style>
 </resources>

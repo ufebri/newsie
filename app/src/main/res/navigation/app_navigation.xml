@@ -12,6 +12,12 @@
         tools:layout="@layout/content_home_fragment" />
 
     <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.raytalktech.newsie.ui.search.SearchFragment"
+        android:label="@string/search"
+        tools:layout="@layout/content_search_fragment" />
+
+    <fragment
         android:id="@+id/navigation_bookmark"
         android:name="com.raytalktech.newsie.ui.bookmark.BookMarkFragment"
         android:label="@string/bottomBarNavigation_Home"

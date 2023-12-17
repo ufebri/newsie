@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.raytalktech.newsie.data.source.DataRepository
 import com.raytalktech.newsie.ui.home.HomeViewModel
+import com.raytalktech.newsie.ui.search.SearchViewModel
 
 class ViewModelFactory private constructor(private val dataRepository: DataRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -27,6 +28,11 @@ class ViewModelFactory private constructor(private val dataRepository: DataRepos
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 return HomeViewModel(dataRepository) as T
             }
+
+            modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
+                return SearchViewModel(dataRepository) as T
+            }
+
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }
 

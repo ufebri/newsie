@@ -10,6 +10,7 @@
     <string name="see_all">See All</string>
     <string name="featured_images">Featured Images</string>
     <string name="categories_of_content">Categories of Content</string>
+    <string name="search">Search</string>
 
     <!-- Category News-->
     <string-array name="category_news">

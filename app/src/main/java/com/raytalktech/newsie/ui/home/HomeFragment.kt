@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -44,6 +45,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _contentBinding = ContentHomeFragmentBinding.inflate(inflater, container, false)
+        val mActivity = requireActivity() as AppCompatActivity
+        mActivity.supportActionBar?.show()
         return binding?.root
     }
 
@@ -139,7 +142,7 @@ class HomeFragment : Fragment() {
                 }
 
                 Status.SUCCESS -> {
-                    //showLoading(false)
+                    showLoading(false, 1)
                 }
 
                 Status.ERROR -> {
@@ -173,7 +176,6 @@ class HomeFragment : Fragment() {
         if (state) {
             shimmer.startShimmer()
         } else {
-            shimmer.stopShimmer()
             shimmer.hideShimmer()
         }
     }
@@ -201,5 +203,13 @@ class HomeFragment : Fragment() {
 
     private fun goToSourceListPubslisher(publisherName: String) {
         //TODO: Go To List
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding?.apply {
+            shimmerBreakingNews.stopShimmer()
+            shimmerPublisherNews.stopShimmer()
+        }
     }
 }

@@ -15,4 +15,6 @@ interface DataSource {
     fun getDetailSourceNews(sourceName: String): LiveData<List<DataEntity>>
 
     fun getAllNewsByCategory(category: String): LiveData<Resource<List<DataEntity>>>
+
+    fun getSearchNewsData(keyword: String): LiveData<Resource<List<DataEntity>>>
 }

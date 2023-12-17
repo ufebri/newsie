@@ -124,4 +124,40 @@ class DataRepository private constructor(
 
         }.asLiveData()
     }
+
+    override fun getSearchNewsData(keyword: String): LiveData<Resource<List<DataEntity>>> {
+        return object : NetworkBoundResource<List<DataEntity>, List<Articles>>(appExecutors) {
+            override fun loadFromDB(): LiveData<List<DataEntity>> =
+                localDataSource.getSearchListNews(keyword)
+
+            override fun createCall(): LiveData<ApiResponse<List<Articles>>> =
+                remoteDataSource.getSearchNews(keyword)
+
+            override fun saveCallResult(data: List<Articles>) {
+                val listBreakingNews = ArrayList<DataEntity>()
+                for (response in data) {
+                    with(response) {
+                        val articles = DataEntity(
+                            publishedAt,
+                            source.name,
+                            author,
+                            title,
+                            description,
+                            url,
+                            urlToImage,
+                            DataHelper.formatDate(publishedAt),
+                            content,
+                            "General",
+                            faviconUrl = FaviconHelper.getFaviconUrl(url)
+                        )
+                        listBreakingNews.add(articles)
+                    }
+                }
+                localDataSource.insertAllNewsData(listBreakingNews)
+            }
+
+            override fun shouldFetch(data: List<DataEntity>?): Boolean = true
+
+        }.asLiveData()
+    }
 }

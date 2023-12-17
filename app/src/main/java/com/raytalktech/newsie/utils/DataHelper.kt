@@ -38,6 +38,30 @@ object DataHelper {
         return currentDate.after(lastUpdated)
     }
 
+    fun getDateNDaysAgo(days: Int, inputFormat: String = "yyyy-MM-dd", outputFormat: String = "yyyy-MM-dd"): String {
+        val dateFormat = SimpleDateFormat(inputFormat, Locale.getDefault())
+        val parsedDate = dateFormat.parse(getCurrentDate(inputFormat))
+
+        val calendar = Calendar.getInstance()
+        parsedDate?.let {
+            calendar.time = it
+            calendar.add(Calendar.DAY_OF_MONTH, -days)
+        }
+
+        val outputDateFormat = SimpleDateFormat(outputFormat, Locale.getDefault())
+        return calendar.time?.let { outputDateFormat.format(it) } ?: ""
+    }
+
+
+    fun getCurrentDate(formateDate: String): String {
+        val currentDate = Calendar.getInstance().time
+
+        // Define output date format
+        val outputFormat = SimpleDateFormat(formateDate, Locale.getDefault())
+
+        return outputFormat.format(currentDate)
+    }
+
     fun formatDateString(inputDateString: String): String {
         try {
             val inputFormat = SimpleDateFormat("hh:mm a EEEE, dd MMMM yyyy", Locale.getDefault())
