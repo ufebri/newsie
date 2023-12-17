@@ -54,20 +54,24 @@ class DataRepository private constructor(
                 val listBreakingNews = ArrayList<DataEntity>()
                 for (response in data) {
                     with(response) {
-                        val articles = DataEntity(
-                            publishedAt,
-                            source.name,
-                            author,
-                            title,
-                            description,
-                            url,
-                            urlToImage,
-                            DataHelper.formatDate(publishedAt),
-                            content,
-                            category,
-                            faviconUrl = FaviconHelper.getFaviconUrl(url)
-                        )
-                        listBreakingNews.add(articles)
+                        val mFavicon = FaviconHelper.getFaviconUrl(url)
+                        val isFaviconHasHTTPS = mFavicon?.contains("https") ?: false
+                        if (response.source.id != null && isFaviconHasHTTPS) {
+                            val articles = DataEntity(
+                                publishedAt,
+                                source.name,
+                                author,
+                                title,
+                                description,
+                                url,
+                                urlToImage,
+                                DataHelper.formatDate(publishedAt),
+                                content,
+                                category,
+                                faviconUrl = mFavicon
+                            )
+                            listBreakingNews.add(articles)
+                        }
                     }
                 }
                 localDataSource.insertAllNewsData(listBreakingNews)
@@ -100,20 +104,24 @@ class DataRepository private constructor(
                 val listBreakingNews = ArrayList<DataEntity>()
                 for (response in data) {
                     with(response) {
-                        val articles = DataEntity(
-                            publishedAt,
-                            source.name,
-                            author,
-                            title,
-                            description,
-                            url,
-                            urlToImage,
-                            DataHelper.formatDate(publishedAt),
-                            content,
-                            category,
-                            faviconUrl = FaviconHelper.getFaviconUrl(url)
-                        )
-                        listBreakingNews.add(articles)
+                        val mFavicon = FaviconHelper.getFaviconUrl(url)
+                        val isFaviconHasHTTPS = mFavicon?.contains("https") ?: false
+                        if (response.source.id != null && isFaviconHasHTTPS) {
+                            val articles = DataEntity(
+                                publishedAt,
+                                source.name,
+                                author,
+                                title,
+                                description,
+                                url,
+                                urlToImage,
+                                DataHelper.formatDate(publishedAt),
+                                content,
+                                category,
+                                faviconUrl = mFavicon
+                            )
+                            listBreakingNews.add(articles)
+                        }
                     }
                 }
                 localDataSource.insertAllNewsData(listBreakingNews)
@@ -121,6 +129,46 @@ class DataRepository private constructor(
 
             override fun shouldFetch(data: List<DataEntity>?): Boolean =
                 data.isNullOrEmpty() || DataHelper.isCurrentDateUpdated(data[0].id)
+
+        }.asLiveData()
+    }
+
+    override fun getSearchNewsData(keyword: String): LiveData<Resource<List<DataEntity>>> {
+        return object : NetworkBoundResource<List<DataEntity>, List<Articles>>(appExecutors) {
+            override fun loadFromDB(): LiveData<List<DataEntity>> =
+                localDataSource.getSearchListNews(keyword)
+
+            override fun createCall(): LiveData<ApiResponse<List<Articles>>> =
+                remoteDataSource.getSearchNews(keyword)
+
+            override fun saveCallResult(data: List<Articles>) {
+                val listBreakingNews = ArrayList<DataEntity>()
+                for (response in data) {
+                    with(response) {
+                        val mFavicon = FaviconHelper.getFaviconUrl(url)
+                        val isFaviconHasHTTPS = mFavicon?.contains("https") ?: false
+                        if (response.source.id != null && isFaviconHasHTTPS) {
+                            val articles = DataEntity(
+                                publishedAt,
+                                source.name,
+                                author,
+                                title,
+                                description,
+                                url,
+                                urlToImage,
+                                DataHelper.formatDate(publishedAt),
+                                content,
+                                keyword,
+                                faviconUrl = mFavicon
+                            )
+                            listBreakingNews.add(articles)
+                        }
+                    }
+                }
+                localDataSource.insertAllNewsData(listBreakingNews)
+            }
+
+            override fun shouldFetch(data: List<DataEntity>?): Boolean = true
 
         }.asLiveData()
     }
