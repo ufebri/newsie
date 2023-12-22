@@ -24,6 +24,6 @@ interface ApiService {
         @Query("sortBy") sortBy: String = "popularity",
         @Query("pageSize") pageSize: String = "20",
         @Query("from") fromDate: String = DataHelper.getCurrentDate("yyyy-MM-dd"),
-        @Query("to") toDate: String = DataHelper.getDateNDaysAgo(30)
+        @Query("to") toDate: String = DataHelper.getDateNDaysAgo(90)
     ): Call<DataResponse>
 }

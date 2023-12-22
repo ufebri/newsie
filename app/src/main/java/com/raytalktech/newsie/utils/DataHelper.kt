@@ -69,7 +69,7 @@ object DataHelper {
     fun formatDateString(inputDateString: String): String {
         try {
             val inputFormat = SimpleDateFormat("hh:mm a EEEE, dd MMMM yyyy", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("EEEE", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
 
             val date = inputFormat.parse(inputDateString)
 
