@@ -31,7 +31,10 @@ class MainActivity : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_bookmark
+                R.id.navigation_home,
+                R.id.navigation_search,
+                R.id.navigation_bookmark,
+                R.id.navigation_account
             )
         )
         setSupportActionBar(binding.toolbar)

@@ -20,7 +20,13 @@
     <fragment
         android:id="@+id/navigation_bookmark"
         android:name="com.raytalktech.newsie.ui.bookmark.BookMarkFragment"
-        android:label="@string/bottomBarNavigation_Home"
+        android:label="@string/bottomBarNavigation_Bookmark"
+        tools:layout="@layout/content_bookmark_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_account"
+        android:name="com.raytalktech.newsie.ui.account.AccountFragment"
+        android:label="@string/bottomBarNavigation_Account"
         tools:layout="@layout/content_bookmark_fragment" />
 
 </navigation>
