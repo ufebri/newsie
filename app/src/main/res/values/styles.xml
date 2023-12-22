@@ -30,4 +30,5 @@
 
     <!-- ToolBar -->
     <style name="ToolBarStyle" parent="Theme.AppCompat"></style>
+
 </resources>

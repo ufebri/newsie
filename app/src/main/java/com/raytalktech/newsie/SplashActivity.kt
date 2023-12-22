@@ -10,10 +10,13 @@ import android.view.WindowInsetsController
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
 import com.raytalktech.newsie.databinding.ActivitySplashBinding
+import com.raytalktech.newsie.ui.onboarding.OnboardingActivity
+import com.raytalktech.newsie.utils.SharedPreferencesHelper
 
 class SplashActivity : AppCompatActivity() {
 
     private lateinit var splashBinding: ActivitySplashBinding
+    private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,13 +25,23 @@ class SplashActivity : AppCompatActivity() {
         splashBinding = binding
         setContentView(binding.root)
 
+        sharedPreferencesHelper = SharedPreferencesHelper(this)
+
         setupMotion()
     }
 
     private fun setupMotion() {
         splashBinding.motionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
             override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                startActivity(
+                    Intent(
+                        this@SplashActivity,
+                        if (sharedPreferencesHelper.getString("selected_country_id") != null)
+                            MainActivity::class.java
+                        else
+                            OnboardingActivity::class.java
+                    )
+                )
             }
 
             override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {}
