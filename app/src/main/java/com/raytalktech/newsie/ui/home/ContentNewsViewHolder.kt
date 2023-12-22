@@ -8,7 +8,6 @@ import com.raytalktech.newsie.R
 import com.raytalktech.newsie.data.source.local.entity.DataEntity
 import com.raytalktech.newsie.databinding.ItemContentNewsBinding
 import com.raytalktech.newsie.utils.DataHelper
-import com.raytalktech.newsie.utils.FaviconHelper
 
 class ContentNewsViewHolder(private val binding: ItemContentNewsBinding) :
     RecyclerView.ViewHolder(binding.root) {
